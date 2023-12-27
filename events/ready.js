@@ -1,25 +1,30 @@
-const { Events } = require('discord.js');
-require('dotenv').config();
+const { Events, Guild } = require("discord.js");
+require("dotenv").config();
 
-const readline = require('readline');
+let generalId;
+let guildId = process.env.guildId; // Replace with your guild ID
+let guild;
+
+const readline = require("readline");
 const rl = readline.createInterface({
     input: process.stdin,
-    output: process.stdout
+    output: process.stdout,
 });
 
 function askQuestion(client, generalId) {
-    rl.question('What do you want to send to the channel? \n', (answer) => {
+    rl.question("What do you want to send to the channel? \n", (answer) => {
         // Get the channel
         const channel = client.channels.cache.get(generalId);
         if (!channel) {
-            console.log('Channel not found!');
+            console.log("Channel not found!");
             process.exit(1);
         }
 
         // Send the message to the channel
-        channel.send(answer)
+        channel
+            .send(answer)
             .then(() => {
-                console.log('Message sent!');
+                console.log("Message sent!");
                 askQuestion(client, generalId); // Ask the next question
             })
             .catch(console.error);
@@ -27,21 +32,23 @@ function askQuestion(client, generalId) {
 }
 
 module.exports = {
-	name: Events.ClientReady,
-	once: true,
-	execute(client) {
-		console.log(`Ready! Logged in as ${client.user.tag}`);
+    name: Events.ClientReady,
+    once: true,
+    generalId: generalId,
+    guild: guild,
+    execute(client) {
+        console.log(`Ready! Logged in as ${client.user.tag}`);
 
-        // Print out all the channels the bot is in
-        // console.log('Channels:');
-        // client.channels.cache.forEach(channel => {
-        //     console.log(` - ${channel.name} (${channel.type}) - ${channel.id}`);
-        // });
+        guild = client.guilds.cache.get(guildId);
+        if (!guild) {
+            console.log("Guild not found!");
+            process.exit(1);
+        }
 
-        let generalId;
-        const regex = /general/i;
-        client.channels.cache.forEach(channel => {
-            if (regex.test(channel.name)) {
+        // Find the general channel ID
+        const regexChat = /general/i;
+        guild.channels.cache.forEach((channel) => {
+            if (regexChat.test(channel.name)) {
                 generalId = channel.id;
             }
         });
@@ -49,5 +56,5 @@ module.exports = {
 
         // Ask the first question
         askQuestion(client, generalId);
-	},
+    },
 };
