@@ -4,7 +4,7 @@ const regexGame = /valorant/i;
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('defcon4')
-		.setDescription('INITILIZE DEFCON 4'),
+		.setDescription('INITIALIZE DEFCON 4'),
 	async execute(interaction) {
         const guild = interaction.guild;
 
@@ -33,7 +33,7 @@ module.exports = {
             await interaction.reply(message);
         }
 		else {
-			await interaction.reply("We good, no is playing that dogshit.");
+			await interaction.reply("We good, no one is playing that dogshit.");
 		}
 	},
 };

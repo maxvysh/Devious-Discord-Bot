@@ -38,6 +38,7 @@ module.exports = {
     guild: guild,
     execute(client) {
         console.log(`Ready! Logged in as ${client.user.tag}`);
+        client.user.setActivity("Valorant Tracker, the ultimate companion for every dedicated agent! 🎮🔥");
 
         guild = client.guilds.cache.get(guildId);
         if (!guild) {
