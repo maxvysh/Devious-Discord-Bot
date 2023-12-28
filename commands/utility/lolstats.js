@@ -29,7 +29,6 @@ module.exports = {
         response = await fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}?api_key=${process.env.riotkey}`);
         data = await response.json();
         const encryptedSummonerId = data.id;
-        const name = data.name;
         const profileIconId = data.profileIconId;
         const summonerLevel = data.summonerLevel;
         console.log(puuid);
@@ -41,12 +40,16 @@ module.exports = {
         let avgKDA = 0;
 
         let kda = 0;
+        let name;
         for (let i = 0; i < data.length; i++) {
             response = await fetch(`https://americas.api.riotgames.com/lol/match/v5/matches/${data[i]}?api_key=${process.env.riotkey}`);
             let matchData = await response.json();
-            let participant = matchData.info.participants.find(p => p.summonerName === name);
+            let participant = matchData.info.participants.find(p => p.puuid === puuid);
             console.log(participant.challenges.kda);
             kda += participant.challenges.kda;
+            if (i == 0) {
+                name = participant.riotIdGameName;
+            }
         }
         avgKDA = kda / data.length;
 
