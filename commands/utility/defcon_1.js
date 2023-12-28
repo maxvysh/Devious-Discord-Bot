@@ -35,7 +35,7 @@ module.exports = {
             const textChannel = interaction.channel;
             const interval = setInterval(async () => {
                 if (count > 0) {
-                    // bot.setNickname(count.toString());
+                    // bot.setNickname(count.toString()); --Scrapped the nickname idea because it would get rate limited
                     // Type 'count' in the chat channel that the command was typed in
                     await textChannel.send(count.toString());
                     count--;
