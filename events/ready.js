@@ -1,5 +1,4 @@
-const { Events, Guild } = require("discord.js");
-require("dotenv").config();
+const { Events } = require("discord.js");
 
 let generalId;
 let guildId = process.env.guildId; // Replace with your guild ID
@@ -38,7 +37,7 @@ module.exports = {
     guild: guild,
     execute(client) {
         console.log(`Ready! Logged in as ${client.user.tag}`);
-        client.user.setActivity("Valorant Tracker, the ultimate companion for every dedicated agent! 🎮🔥");
+        client.user.setActivity("The ultimate companion for every dedicated agent! 🎮🔥");
 
         guild = client.guilds.cache.get(guildId);
         if (!guild) {
