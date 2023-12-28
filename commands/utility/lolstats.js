@@ -10,13 +10,12 @@ module.exports = {
                 .setRequired(true))
         .addStringOption(option =>
             option.setName('tag')
-                .setDescription('The tag of the player')
-                .setRequired(true)),
-                // .setAutocomplete(true)), FIX THIS
+                .setDescription('The tag of the player (leave blank if NA1)')
+                .setRequired(false)),
     async execute(interaction) {
         await interaction.deferReply();
         const username = interaction.options.getString('username');
-        const tag = interaction.options.getString('tag');
+        const tag = interaction.options.getString('tag') || 'NA1';
 
         let response = await fetch(`https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${username}/${tag}?api_key=${process.env.riotkey}`);
         if (!response.ok) {
@@ -39,12 +38,14 @@ module.exports = {
 
         let avgKDA = 0;
 
+        let matchRequests = data.map(matchId => fetch(`https://americas.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${process.env.riotkey}`));
+        let matchResponses = await Promise.all(matchRequests);
+        let matchData = await Promise.all(matchResponses.map(response => response.json()));
+
         let kda = 0;
         let name;
-        for (let i = 0; i < data.length; i++) {
-            response = await fetch(`https://americas.api.riotgames.com/lol/match/v5/matches/${data[i]}?api_key=${process.env.riotkey}`);
-            let matchData = await response.json();
-            let participant = matchData.info.participants.find(p => p.puuid === puuid);
+        for (let i = 0; i < matchData.length; i++) {
+            let participant = matchData[i].info.participants.find(p => p.puuid === puuid);
             console.log(participant.challenges.kda);
             kda += participant.challenges.kda;
             if (i == 0) {
