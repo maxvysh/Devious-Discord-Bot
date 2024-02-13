@@ -29,11 +29,11 @@ module.exports = {
             }
         });
         if (count > 0) {
-            message += "stop playing that dogshit.";
+            message += "stop playing that garbage.";
             await interaction.reply(message);
         }
 		else {
-			await interaction.reply("We good, no one is playing that dogshit.");
+			await interaction.reply("We good, no one is playing that garbage.");
 		}
 	},
 };
