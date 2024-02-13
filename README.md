@@ -3,6 +3,11 @@
 This was a discord bot I orignally made just to mess with my friends, but I decided to publish it because honestly it had some impressive features and it could be a good framework for anyone who is trying to build something similar. 
 Make sure to put in all your own unique values in the .env file for the bot to work properly. 
 
+Use this command to run
+```javascript
+node .
+```
+
 # FEATURES:
 - ValMsg.js sends an image whenever someone types Val or Valorant in a chat channel
 - ready.js finds the general chat channel of the server you put in .env and then the bot will send anything you type into the terminal
